@@ -8,13 +8,14 @@ from telebot.types import (
     ChatMemberUpdated,
     InlineKeyboardMarkup,
     InlineKeyboardButton,
+    BotCommand,
 )
 from keep_alive import keep_alive
 
 # ══════════════════════════════════════════════
 #  Configuration
 # ══════════════════════════════════════════════
-TOKEN      = "8513057573:AAF6UjqP7DqlWE8KrnXJ5YI8eCtuHH0IvFA"
+TOKEN      = "8879720952:AAH4rJWhxatDifZVY1uGyWah_-rY0CV-548"
 # Both admins — all reports go to both, both can use /admin
 ADMIN_IDS  = [8239921711, 7477336713]   # @Hunter11110001, @refreshaccount_shadow
 ADMIN_ID   = ADMIN_IDS[0]              # primary (kept for backward compat)
@@ -309,10 +310,23 @@ def on_chat_member(update: ChatMemberUpdated):
 
 
 # ══════════════════════════════════════════════
+#  Register bot commands (shown in Telegram menu)
+# ══════════════════════════════════════════════
+def set_commands():
+    bot.set_my_commands([
+        BotCommand("start",  "বটের সাথে পরিচিত হও ও সব লিংক দেখো"),
+        BotCommand("help",   "কীভাবে বট ব্যবহার করবে"),
+        BotCommand("admin",  "Admin দের সাথে যোগাযোগ করো"),
+        BotCommand("stats",  "গ্রুপের সদস্য সংখ্যা দেখো"),
+    ])
+
+
+# ══════════════════════════════════════════════
 #  Entry point
 # ══════════════════════════════════════════════
 if __name__ == "__main__":
     keep_alive()
+    set_commands()
     print("━" * 40)
     print("  💎 Shadow's Box Bot — ONLINE")
     print("━" * 40)
