@@ -79,7 +79,7 @@ def cmd_start(message):
         InlineKeyboardButton("🖼️ Fake Profile Group",    url=FAKE_PROFILE_LINK),
         InlineKeyboardButton("✍️ Caption Box",           url=CAPTION_BOX_LINK),
         InlineKeyboardButton("💬 Discussion Group",      url=DISCUSSION_LINK),
-        InlineKeyboardButton("⭐ Main Channel",         url=MAIN_CHANNEL),
+        InlineKeyboardButton("⭐ Main Channel",          url=MAIN_CHANNEL),
         InlineKeyboardButton("📘 Facebook Page",         url=FB_PAGE_LINK),
     )
 
