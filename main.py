@@ -21,7 +21,7 @@ ADMIN_IDS  = [8239921711, 7477336713]   # @Hunter11110001, @refreshaccount_shado
 ADMIN_ID   = ADMIN_IDS[0]              # primary (kept for backward compat)
 ADMIN_PASS = "siam123"
 OWNER_USER = "@Hunter11110001"
-OWNER_USER ="@refreshaccount_shadow"
+OWNER_USER2 ="@refreshaccount_shadow"
 
 # Groups to monitor for join/leave
 FAKE_PROFILE_GROUP = -1003839550639
