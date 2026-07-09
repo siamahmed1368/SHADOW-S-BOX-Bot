@@ -35,6 +35,7 @@ MAIN_CHANNEL       = -1004455607053
 FAKE_PROFILE_NAME  = "Shadow's Box — Fake Profile"
 CAPTION_BOX_NAME   = "Shadow's Box — Caption Box"
 DISCUSSION_NAME    = "Shadow's Box Chat"
+MAIN_CHANNEL       ="Main Channel"
 
 # Links
 FAKE_PROFILE_LINK  = "https://t.me/vip_profile_pic_free"
