@@ -14,18 +14,25 @@ from keep_alive import keep_alive
 # ══════════════════════════════════════════════
 #  Configuration
 # ══════════════════════════════════════════════
-TOKEN      = "8569070620:AAFtpPX-BFsAwcd8_OgJJ_SuQky40-_cmx8"
-ADMIN_ID   = 8239921711
+TOKEN      = "8513057573:AAF6UjqP7DqlWE8KrnXJ5YI8eCtuHH0IvFA"
+# Both admins — all reports go to both, both can use /admin
+ADMIN_IDS  = [8239921711, 7477336713]   # @Hunter11110001, @refreshaccount_shadow
+ADMIN_ID   = ADMIN_IDS[0]              # primary (kept for backward compat)
 ADMIN_PASS = "siam123"
 OWNER_USER = "@devil1111000"
 
-DISCUSSION_GROUP = -1003301200964
-PAYMENT_GROUP    = -1003964578696
-MAIN_GROUP       = -1003510861203
+# Groups to monitor for join/leave
+FAKE_PROFILE_GROUP = -1003839550639
+CAPTION_BOX_GROUP  = -1004296475096
 
-DISCUSSION_LINK = "https://t.me/+KEZuXNU7a31iNDg1"
-PAYMENT_LINK    = "https://t.me/+066jiPs3Z7Y5Mzc1"
-MAIN_LINK       = "https://t.me/+ms4EzkABlqs3Njdl"
+# Main group (where bans are applied)
+DISCUSSION_GROUP   = -1004387391206
+
+# Links
+FAKE_PROFILE_LINK  = "https://t.me/vip_profile_pic_free"
+CAPTION_BOX_LINK   = "https://t.me/caption_box_free"
+DISCUSSION_LINK    = "https://t.me/+eCgqMOqxeyo0NTE1"
+FB_PAGE_LINK       = "https://www.facebook.com/VortexBD.official"
 
 # ══════════════════════════════════════════════
 #  Bot initialisation
@@ -60,16 +67,19 @@ def cmd_start(message):
 
     markup = InlineKeyboardMarkup(row_width=1)
     markup.add(
-        InlineKeyboardButton("1️⃣  Discussion Group", url=DISCUSSION_LINK),
-        InlineKeyboardButton("2️⃣  Payment Group",    url=PAYMENT_LINK),
+        InlineKeyboardButton("🖼️ Fake Profile Group",    url=FAKE_PROFILE_LINK),
+        InlineKeyboardButton("✍️ Caption Box",           url=CAPTION_BOX_LINK),
+        InlineKeyboardButton("💬 Discussion Group",      url=DISCUSSION_LINK),
+        InlineKeyboardButton("📘 Facebook Page",         url=FB_PAGE_LINK),
     )
 
     text = (
         f"💎 *Welcome, {display_name(user)}!*\n\n"
-        "*To unlock the Main Group, complete both steps:*\n\n"
-        "  1️⃣ Join the *Discussion Group*\n"
-        "  2️⃣ Join the *Payment Group*\n\n"
-        "📲 The *Main Group link* will arrive here automatically once you join.\n\n"
+        "*আমাদের সব গ্রুপ ও পেজে যোগ দাও:*\n\n"
+        "  🖼️ *Fake Profile Group*\n"
+        "  ✍️ *Caption Box*\n"
+        "  💬 *Discussion Group*\n"
+        "  📘 *Facebook Page*\n\n"
         f"🛡️ Support: *{OWNER_USER}*"
     )
 
@@ -81,6 +91,11 @@ def cmd_start(message):
 # ══════════════════════════════════════════════
 @bot.message_handler(commands=["admin"])
 def cmd_admin(message):
+    # Only admins can use this command
+    if message.from_user.id not in ADMIN_IDS:
+        bot.reply_to(message, "🚫 *এই command টি শুধু Admin ব্যবহার করতে পারবে।*")
+        return
+
     parts = message.text.strip().split(maxsplit=1)
 
     if len(parts) == 1:
@@ -212,12 +227,12 @@ def on_chat_member(update: ChatMemberUpdated):
     just_joined = old in inactive and new in active
     just_left   = old in active   and new in inactive
 
-    if chat_id not in (DISCUSSION_GROUP, PAYMENT_GROUP):
+    if chat_id not in (FAKE_PROFILE_GROUP, CAPTION_BOX_GROUP):
         return
 
-    group_label = "Discussion" if chat_id == DISCUSSION_GROUP else "Payment"
+    group_label = "Fake Profile" if chat_id == FAKE_PROFILE_GROUP else "Caption Box"
 
-    # ── User joined → DM the Main Group link ────────────
+    # ── User joined → DM the Discussion Group link ───────
     if just_joined:
         joined_users.add(user.id)
         try:
@@ -226,15 +241,19 @@ def on_chat_member(update: ChatMemberUpdated):
                 f"Hi, *{display_name(user)}*\\!\n\n"
                 f"⚡ *WELCOME TO SHADOW'S BOX CHAT* ⚡\n"
                 f"Your trusted platform for Premium Paid Services\\! 🚀\n\n"
+                f"🔗 *আমাদের সব লিংক:*\n\n"
+                f"🖼️ *Fake Profile Group:* {FAKE_PROFILE_LINK}\n"
+                f"✍️ *Caption Box:* {CAPTION_BOX_LINK}\n"
+                f"💬 *Discussion Group:* {DISCUSSION_LINK}\n"
+                f"📘 *Facebook Page:* {FB_PAGE_LINK}\n\n"
                 f"⚠️ *Warning:* Beware of scammers\\. Check usernames carefully before dealing\\. "
-                f"We never DM first\\!\n\n"
-                f"🔗 *Main Group:* {MAIN_LINK}"
+                f"We never DM first\\!"
                 + ADMIN_SIG
             )
         except Exception:
             pass  # User has DMs disabled
 
-    # ── User left → DM goodbye, ban from Main + report to admin ─────
+    # ── User left → DM goodbye, ban from Discussion + report to admin ─────
     elif just_left:
         username = f"@{user.username}" if user.username else "_none_"
         ban_ok   = True
@@ -256,10 +275,11 @@ def on_chat_member(update: ChatMemberUpdated):
             pass  # User has DMs disabled
 
         try:
-            bot.ban_chat_member(MAIN_GROUP, user.id)
+            bot.ban_chat_member(DISCUSSION_GROUP, user.id)
         except Exception as err:
             ban_ok = False
-            bot.send_message(ADMIN_ID, f"⚠️ *Ban failed:* `{err}`")
+            for aid in ADMIN_IDS:
+                bot.send_message(aid, f"⚠️ *Ban failed:* `{err}`")
 
         status_line = "*Banned from Main*" if ban_ok else "*Ban failed — action needed*"
 
@@ -276,14 +296,16 @@ def on_chat_member(update: ChatMemberUpdated):
             photos = bot.get_user_profile_photos(user.id, limit=1)
             if photos and photos.photos:
                 file_id = photos.photos[0][-1].file_id  # highest resolution
-                bot.send_photo(ADMIN_ID, file_id, caption=caption)
+                for aid in ADMIN_IDS:
+                    bot.send_photo(aid, file_id, caption=caption)
                 photo_sent = True
         except Exception:
             pass
 
         # Fallback: text-only report if no photo
         if not photo_sent:
-            bot.send_message(ADMIN_ID, caption)
+            for aid in ADMIN_IDS:
+                bot.send_message(aid, caption)
 
 
 # ══════════════════════════════════════════════
