@@ -20,7 +20,8 @@ TOKEN      = "8879720952:AAFx8bT6SvcHwasPM1yQam4Jq0QanpEmhxk"
 ADMIN_IDS  = [8239921711, 7477336713]   # @Hunter11110001, @refreshaccount_shadow
 ADMIN_ID   = ADMIN_IDS[0]              # primary (kept for backward compat)
 ADMIN_PASS = "siam123"
-OWNER_USER = "@devil1111000"
+OWNER_USER = "@Hunter11110001"
+OWNER_USER ="@refreshaccount_shadow"
 
 # Groups to monitor for join/leave
 FAKE_PROFILE_GROUP = -1003839550639
@@ -28,6 +29,7 @@ CAPTION_BOX_GROUP  = -1004296475096
 
 # Main group (where bans are applied)
 DISCUSSION_GROUP   = -1004387391206
+MAIN_CHANNEL       = -1004455607053
 
 # Group names
 FAKE_PROFILE_NAME  = "Shadow's Box — Fake Profile"
@@ -37,6 +39,7 @@ DISCUSSION_NAME    = "Shadow's Box Chat"
 # Links
 FAKE_PROFILE_LINK  = "https://t.me/vip_profile_pic_free"
 CAPTION_BOX_LINK   = "https://t.me/caption_box_free"
+MAIN_CHANNEL       = "https://t.me/shadows_box"
 DISCUSSION_LINK    = "https://t.me/+eCgqMOqxeyo0NTE1"
 FB_PAGE_LINK       = "https://www.facebook.com/VortexBD.official"
 
@@ -76,6 +79,7 @@ def cmd_start(message):
         InlineKeyboardButton("🖼️ Fake Profile Group",    url=FAKE_PROFILE_LINK),
         InlineKeyboardButton("✍️ Caption Box",           url=CAPTION_BOX_LINK),
         InlineKeyboardButton("💬 Discussion Group",      url=DISCUSSION_LINK),
+        InlineKeyboardButton("⭐  Main Channel",         url=MAIN_CHANNEL),
         InlineKeyboardButton("📘 Facebook Page",         url=FB_PAGE_LINK),
     )
 
@@ -256,6 +260,7 @@ def on_chat_member(update: ChatMemberUpdated):
                 f"🖼️ *{FAKE_PROFILE_NAME}:* {FAKE_PROFILE_LINK}\n"
                 f"✍️ *{CAPTION_BOX_NAME}:* {CAPTION_BOX_LINK}\n"
                 f"💬 *{DISCUSSION_NAME}:* {DISCUSSION_LINK}\n"
+                f"💬 *{MAIN_CHANNEL_NAME}:* {MAIN_CHANNEL}\n"
                 f"📘 *Facebook Page:* {FB_PAGE_LINK}\n\n"
                 f"⚠️ Warning: Beware of scammers. Check usernames carefully before dealing. "
                 f"We never DM first!"
