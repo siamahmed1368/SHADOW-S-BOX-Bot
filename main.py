@@ -88,9 +88,10 @@ def cmd_start(message):
         "*আমাদের সব গ্রুপ ও পেজে যোগ দাও:*\n\n"
         "  🖼️ *Fake Profile Group*\n"
         "  ✍️ *Caption Box*\n"
+        "  ⭐ *Main Channel*\n"
         "  💬 *Discussion Group*\n"
         "  📘 *Facebook Page*\n\n"
-        f"🛡️ Support: *{OWNER_USER}*"
+        f" 🛡️ Support: *{OWNER_USER}*"
     )
 
     bot.send_message(message.chat.id, text, reply_markup=markup)
