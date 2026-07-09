@@ -29,6 +29,11 @@ CAPTION_BOX_GROUP  = -1004296475096
 # Main group (where bans are applied)
 DISCUSSION_GROUP   = -1004387391206
 
+# Group names
+FAKE_PROFILE_NAME  = "Shadow's Box — Fake Profile"
+CAPTION_BOX_NAME   = "Shadow's Box — Caption Box"
+DISCUSSION_NAME    = "Shadow's Box Chat"
+
 # Links
 FAKE_PROFILE_LINK  = "https://t.me/vip_profile_pic_free"
 CAPTION_BOX_LINK   = "https://t.me/caption_box_free"
@@ -45,9 +50,9 @@ joined_users: set[int] = set()
 
 # Admin signature appended to every message
 ADMIN_SIG = (
-    "\n\n👑   *Official Admins:*\n"
+    "\n\n👑 *Official Admins:*\n"
     "• @Hunter11110001\n"
-    "• @refreshaccount\\_shadow"
+    "• @refreshaccount_shadow"
 )
 
 
@@ -228,10 +233,15 @@ def on_chat_member(update: ChatMemberUpdated):
     just_joined = old in inactive and new in active
     just_left   = old in active   and new in inactive
 
-    if chat_id not in (FAKE_PROFILE_GROUP, CAPTION_BOX_GROUP):
+    if chat_id not in (FAKE_PROFILE_GROUP, CAPTION_BOX_GROUP, DISCUSSION_GROUP):
         return
 
-    group_label = "Fake Profile" if chat_id == FAKE_PROFILE_GROUP else "Caption Box"
+    if chat_id == FAKE_PROFILE_GROUP:
+        group_label = FAKE_PROFILE_NAME
+    elif chat_id == CAPTION_BOX_GROUP:
+        group_label = CAPTION_BOX_NAME
+    else:
+        group_label = DISCUSSION_NAME
 
     # ── User joined → DM the Discussion Group link ───────
     if just_joined:
@@ -239,20 +249,24 @@ def on_chat_member(update: ChatMemberUpdated):
         try:
             bot.send_message(
                 user.id,
-                f"Hi, *{display_name(user)}*\\!\n\n"
-                f"⚡ *WELCOME TO SHADOW'S BOX CHAT* ⚡\n"
-                f"Your trusted platform for Premium Paid Services\\! 🚀\n\n"
+                f"Hi, *{display_name(user)}*\n\n"
+                f"⚡ *WELCOME TO {group_label.upper()}* ⚡\n"
+                f"Your trusted platform for Premium Paid Services 🚀\n\n"
                 f"🔗 *আমাদের সব লিংক:*\n\n"
-                f"🖼️ *Fake Profile Group:* {FAKE_PROFILE_LINK}\n"
-                f"✍️ *Caption Box:* {CAPTION_BOX_LINK}\n"
-                f"💬 *Discussion Group:* {DISCUSSION_LINK}\n"
+                f"🖼️ *{FAKE_PROFILE_NAME}:* {FAKE_PROFILE_LINK}\n"
+                f"✍️ *{CAPTION_BOX_NAME}:* {CAPTION_BOX_LINK}\n"
+                f"💬 *{DISCUSSION_NAME}:* {DISCUSSION_LINK}\n"
                 f"📘 *Facebook Page:* {FB_PAGE_LINK}\n\n"
-                f"⚠️ *Warning:* Beware of scammers\\. Check usernames carefully before dealing\\. "
-                f"We never DM first\\!"
+                f"⚠️ Warning: Beware of scammers. Check usernames carefully before dealing. "
+                f"We never DM first!"
                 + ADMIN_SIG
             )
-        except Exception:
-            pass  # User has DMs disabled
+        except Exception as e:
+            for aid in ADMIN_IDS:
+                try:
+                    bot.send_message(aid, f"⚠️ Welcome DM failed for {display_name(user)} (ID: {user.id})\nError: {e}")
+                except Exception:
+                    pass
 
     # ── User left → DM goodbye, ban from Discussion + report to admin ─────
     elif just_left:
@@ -263,17 +277,22 @@ def on_chat_member(update: ChatMemberUpdated):
         try:
             bot.send_message(
                 user.id,
-                f"👋 *GOOD BYE, {display_name(user)}\\!*\n"
-                "FROM SHADOW'S BOX CHAT 👋\n\n"
-                "গ্রুপ থেকে চলে যাওয়ার জন্য ধন্যবাদ\\! আশা করি আমাদের প্রিমিয়াম সার্ভিস "
-                "এবং চ্যাট আপনার ভালো লেগেছে।\n\n"
+                f"👋 *GOOD BYE, {display_name(user)}!*\n"
+                f"FROM *{group_label}* 👋\n\n"
+                f"গ্রুপ থেকে চলে যাওয়ার জন্য ধন্যবাদ! "
+                f"আবার join করতে চাইলে:\n\n"
+                f"💬 *{DISCUSSION_NAME}:* {DISCUSSION_LINK}\n\n"
                 "👑 *Any issues? Contact Admins:*\n\n"
                 "• @Hunter11110001\n"
-                "• @refreshaccount\\_shadow\n\n"
-                "Take care and see you again\\! ✨"
+                "• @refreshaccount_shadow\n\n"
+                "Take care and see you again! ✨"
             )
-        except Exception:
-            pass  # User has DMs disabled
+        except Exception as e:
+            for aid in ADMIN_IDS:
+                try:
+                    bot.send_message(aid, f"⚠️ Goodbye DM failed for {display_name(user)} (ID: {user.id})\nError: {e}")
+                except Exception:
+                    pass
 
         try:
             bot.ban_chat_member(DISCUSSION_GROUP, user.id)
