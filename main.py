@@ -15,7 +15,7 @@ from keep_alive import keep_alive
 # ══════════════════════════════════════════════
 #  Configuration
 # ══════════════════════════════════════════════
-TOKEN      = "8879720952:AAH4rJWhxatDifZVY1uGyWah_-rY0CV-548"
+TOKEN      = "8879720952:AAFx8bT6SvcHwasPM1yQam4Jq0QanpEmhxk"
 # Both admins — all reports go to both, both can use /admin
 ADMIN_IDS  = [8239921711, 7477336713]   # @Hunter11110001, @refreshaccount_shadow
 ADMIN_ID   = ADMIN_IDS[0]              # primary (kept for backward compat)
