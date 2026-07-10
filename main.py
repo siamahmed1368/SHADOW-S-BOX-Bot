@@ -73,7 +73,7 @@ def display_name(user) -> str:
 @bot.message_handler(commands=["start"])
 def cmd_start(message):
     user = message.from_user
-    joined_users.add(chat.id)
+    joined_users.add(user.id)
 
     markup = InlineKeyboardMarkup(row_width=1)
     markup.add(
@@ -283,7 +283,7 @@ def on_chat_member(update: ChatMemberUpdated):
         # Send goodbye DM to the user
         try:
             bot.send_message(
-                user.id,
+                chat.id,
                 f"👋 *GOOD BYE, {display_name(user)}!*\n"
                 f"FROM *{group_label}* 👋\n\n"
                 f"গ্রুপ থেকে চলে যাওয়ার জন্য ধন্যবাদ! "
