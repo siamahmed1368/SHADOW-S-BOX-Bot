@@ -73,7 +73,7 @@ def display_name(user) -> str:
 @bot.message_handler(commands=["start"])
 def cmd_start(message):
     user = message.from_user
-    joined_users.add(user.id)
+    joined_users.add(chat.id)
 
     markup = InlineKeyboardMarkup(row_width=1)
     markup.add(
@@ -254,7 +254,7 @@ def on_chat_member(update: ChatMemberUpdated):
         joined_users.add(user.id)
         try:
             bot.send_message(
-                user.id,
+                chat.id,
                 f"Hi, *{display_name(user)}*\n\n"
                 f"⚡ *WELCOME TO {group_label.upper()}* ⚡\n"
                 f"Your trusted platform for Premium Paid Services 🚀\n\n"
